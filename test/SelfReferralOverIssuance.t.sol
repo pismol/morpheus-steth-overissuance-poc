@@ -4,33 +4,38 @@ pragma solidity ^0.8.20;
 import "forge-std/Test.sol";
 
 interface IDepositPool {
-    function usersData(address user_, uint256 poolIndex_) external view returns (
-        uint128 deposited,
-        uint128 rate,
-        uint128 pendingRewards,
-        uint256 virtualDeposited,
-        uint128 lastStake,
-        uint128 claimLockStart,
-        uint128 claimLockEnd,
-        address referrer
-    );
-    function referrersData(address user_, uint256 poolIndex_) external view returns (
-        uint128 totalAmount,
-        uint128 rate,
-        uint128 pendingRewards,
-        uint256 virtualAmountStaked,
-        uint128 lastClaim
-    );
+    function usersData(address user_, uint256 poolIndex_)
+        external
+        view
+        returns (
+            uint128 deposited,
+            uint128 rate,
+            uint128 pendingRewards,
+            uint256 virtualDeposited,
+            uint128 lastStake,
+            uint128 claimLockStart,
+            uint128 claimLockEnd,
+            address referrer
+        );
+    function referrersData(address user_, uint256 poolIndex_)
+        external
+        view
+        returns (
+            uint128 totalAmount,
+            uint128 rate,
+            uint128 pendingRewards,
+            uint256 virtualAmountStaked,
+            uint128 lastClaim
+        );
     function totalDepositedInPublicPools() external view returns (uint256);
-    function rewardPoolsData(uint256 poolIndex_) external view returns (
-        uint128 lastUpdate,
-        uint128 rate,
-        uint256 totalVirtualDeposited
-    );
-    function referrerTiers(uint256 poolIndex_, uint256 tierIndex_) external view returns (
-        uint256 amount,
-        uint256 multiplier
-    );
+    function rewardPoolsData(uint256 poolIndex_)
+        external
+        view
+        returns (uint128 lastUpdate, uint128 rate, uint256 totalVirtualDeposited);
+    function referrerTiers(uint256 poolIndex_, uint256 tierIndex_)
+        external
+        view
+        returns (uint256 amount, uint256 multiplier);
 }
 
 /**
